@@ -4,7 +4,7 @@
  * MIT Licensed
  */
 
-var Rcon = require('node-rcon');
+var Rcon = require('rcon');
 
 var conn = new Rcon('localhost', 1234, 'password');
 conn.on('auth', function() {

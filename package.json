@@ -1,6 +1,6 @@
 {
   "author": "Justin Li <jli@j-li.net>",
-  "name": "node-rcon",
+  "name": "rcon",
   "description": "A generic RCON client for nodejs.",
   "version": "0.1.0",
   "homepage": "https://github.com/j1i/node-rcon",
