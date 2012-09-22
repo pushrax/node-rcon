@@ -4,10 +4,10 @@
  * MIT Licensed
  */
 
-var util = require('util'),
-  events = require('events'),
-  net = require('net'),
-  Buffer = require('buffer').Buffer;
+var util = require('util')
+  , events = require('events')
+  , net = require('net')
+  , Buffer = require('buffer').Buffer;
 
 
 var PacketType = {
