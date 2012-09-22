@@ -27,7 +27,7 @@ function Rcon(host, port, password, id) {
   this.socket = null;
   this.rconId = id || 0x0012D4A6;
   this.hasAuthed = false;
-  
+
   events.EventEmitter.call(this);
 };
 
@@ -36,7 +36,7 @@ util.inherits(Rcon, events.EventEmitter);
 Rcon.prototype.send = function(data, cmd, id) {
   cmd = cmd || PacketType.COMMAND;
   id = id || this.rconId;
-  
+
   var sendBuf = new Buffer(data.length + 16);
   sendBuf.writeInt32LE(data.length + 12, 0);
   sendBuf.writeInt32LE(id, 4);
@@ -51,6 +51,7 @@ Rcon.prototype.connect = function() {
   this.socket = net.createConnection(this.port, this.host);
   this.socket.on('data', function(data) { self.socketOnData(data) })
              .on('connect', function() { self.socketOnConnect() })
+             .on('error', function(err) { self.emit('error', err); })
              .on('end', function() { self.socketOnEnd() });
 };
 
@@ -61,7 +62,7 @@ Rcon.prototype.disconnect = function() {
 Rcon.prototype.socketOnData = function(data) {
   var len = data.readInt32LE(0);
   if (!len) return;
-  
+
   if (len >= 8 && data.readInt32LE(4) == this.rconId) {
     var packetType = data.readInt32LE(8);
     if (!this.hasAuthed && packetType == PacketType.RESPONSE_AUTH) {
