@@ -12,5 +12,5 @@ npm:
 
 ## Usage
 
-  See [`examples/stdio.js`](https://github.com/j1i/node-rcon/blob/master/examples/stdio.js) for an simple example using node-rcon.
+  See [`examples/stdio.js`](https://github.com/pushrax/node-rcon/blob/master/examples/stdio.js) for an simple example using node-rcon.
 
