@@ -1,14 +1,12 @@
 {
   "author": "Justin Li <jli@j-li.net>",
   "name": "rcon",
-  "description": "A generic RCON client for nodejs.",
-  "version": "0.1.4",
+  "description": "A generic RCON client for Node.js",
+  "version": "0.1.5",
   "homepage": "https://github.com/pushrax/node-rcon",
   "repository": "git://github.com/pushrax/node-rcon",
   "main": "node-rcon",
   "dependencies": {},
-  "devDependencies": {},
-  "optionalDependencies": {},
   "engines": {
     "node": "*"
   }

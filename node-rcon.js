@@ -25,7 +25,7 @@ function Rcon(host, port, password, id) {
   this.port = port;
   this.password = password;
   this.socket = null;
-  this.rconId = id || 0x0012D4A6;
+  this.rconId = id || 0x0012D4A6; // This is arbitrary in most cases
   this.hasAuthed = false;
 
   events.EventEmitter.call(this);
@@ -57,6 +57,14 @@ Rcon.prototype.connect = function() {
 
 Rcon.prototype.disconnect = function() {
   this.socket.end();
+};
+
+Rcon.prototype.setTimeout = function(timeout, callback) {
+  var self = this;
+  this.socket.setTimeout(timeout, function() {
+    self.socket.end();
+    if (callback) callback();
+  });
 };
 
 Rcon.prototype.socketOnData = function(data) {
