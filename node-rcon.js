@@ -68,27 +68,28 @@ Rcon.prototype.setTimeout = function(timeout, callback) {
 };
 
 Rcon.prototype.socketOnData = function(data) {
- 	while(data.length > 0){
-   	var len  = data.readInt32LE(0);
-   	if (!len) return;
- 		var id   = data.readInt32LE(4);
- 		var type = data.readInt32LE(8);
- 		if (len >= 10 && id == this.rconId){
- 			if (!this.hasAuthed && type == PacketType.RESPONSE_AUTH){
- 				this.hasAuthed = true;
- 				this.emit('auth');
- 			}else if (type == PacketType.RESPONSE_VALUE){
-				/*	Read only "body" of one RCON-Packet (truncate 0x00 at the end) 
-				 *  See https://developer.valvesoftware.com/wiki/Source_RCON_Protocol for details
-				 */	
-       	var str = data.toString('utf8', 12, 12 + len - 10);
-				// emit the response without the 0x0a newline.
-       	this.emit('response', str.substring(0, str.length - 1));
- 			}
- 		}
- 		data = data.slice(12+len-8);
-  	}
- }; 
+  while(data.length > 0){
+    var len  = data.readInt32LE(0);
+    if (!len) return;
+    var id   = data.readInt32LE(4);
+    var type = data.readInt32LE(8);
+    if (len >= 10 && id == this.rconId){
+      if (!this.hasAuthed && type == PacketType.RESPONSE_AUTH){
+        this.hasAuthed = true;
+        this.emit('auth');
+      }else if (type == PacketType.RESPONSE_VALUE){
+        /* Read only "body" of one RCON-Packet (truncate 0x00 at the end) 
+         * See https://developer.valvesoftware.com/wiki/Source_RCON_Protocol for details
+         */	
+        var str = data.toString('utf8', 12, 12 + len - 10);
+        // emit the response without the 0x0a newline.
+       this.emit('response', str.substring(0, str.length - 1));
+      }
+    }
+    //delete handled packet.
+    data = data.slice(12+len-8);
+  }
+}; 
 
 Rcon.prototype.socketOnConnect = function() {
   this.send(this.password, PacketType.AUTH);
