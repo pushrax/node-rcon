@@ -27,6 +27,7 @@ function Rcon(host, port, password, id) {
   this.socket = null;
   this.rconId = id || 0x0012D4A6; // This is arbitrary in most cases
   this.hasAuthed = false;
+	this.sockbuf = null;
 
   events.EventEmitter.call(this);
 };
@@ -68,6 +69,11 @@ Rcon.prototype.setTimeout = function(timeout, callback) {
 };
 
 Rcon.prototype.socketOnData = function(data) {
+  if (this.sockbuf != null){
+    //concat the rest of the last packet from the other buffer and the new bufferdata
+    data = Buffer.concat([this.sockbuf, data]);
+    this.sockbuf = null;
+  }
   while(data.length > 0){
     var len  = data.readInt32LE(0);
     if (!len) return;
@@ -83,11 +89,17 @@ Rcon.prototype.socketOnData = function(data) {
          */	
         var str = data.toString('utf8', 12, 12 + len - 10);
         // emit the response without the 0x0a newline.
-       this.emit('response', str.substring(0, str.length - 1));
+        this.emit('response', str.substring(0, str.length - 1));
       }
     }
     //delete handled packet.
-    data = data.slice(12+len-8);
+    if (data.length > len + 4){
+      data = data.slice(12 + len - 8);
+    }else{
+      //save data when the length in the rcon header is smaller then the data left.
+      this.sockbuf = data;
+      break;
+    }
   }
 }; 
 
