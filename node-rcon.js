@@ -56,7 +56,7 @@ Rcon.prototype.send = function(data, cmd, id) {
     sendBuf.writeInt32LE(0, data.length + 12);
   } else {
     if (this.challenge && !this._challengeToken) {
-      this.emit('error', 'Not authenticated');
+      this.emit('error', new Error('Not authenticated'));
       return;
     }
     var str = "rcon ";
