@@ -30,7 +30,7 @@ client = new Rcon(host, port, password, options);
 Here's a non-exhaustive list of which games use which options:
 
 | Game              | Protocol  | Challenge |
-| ----------------- | --------- | --------- |
+| :---------------- | :-------- | :-------- |
 | Any Source game   | TCP       | N/A       |
 | Minecraft         | TCP       | N/A       |
 | Any GoldSrc game  | UDP       | Yes       |
@@ -40,4 +40,7 @@ Source games include CS:S, CS:GO, TF2, etc. GoldSrc games include CS 1.6, TFC,
 Ricochet (lol), etc.
 
 If there's a game you know uses a certain protocol, feel free to submit a pull
-request!
+request.
+
+Please submit a bug report for any game you try that doesn't work!
+
