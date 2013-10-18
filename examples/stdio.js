@@ -9,7 +9,7 @@
  * You need to manually `npm install keypress` for this example to work
  */
 
-var Rcon = require('../rcon');
+var Rcon = require('../node-rcon');
 
 var conn = new Rcon('localhost', 1234, 'password');
 conn.on('auth', function() {
@@ -39,7 +39,7 @@ process.stdin.on('keypress', function(chunk, key) {
     return;
   }
   process.stdout.write(chunk);
-  if (key && key.name == 'enter') {
+  if (key && (key.name == 'enter' || key.name == 'return')) {
     conn.send(buffer);
     buffer = "";
     process.stdout.write("\n");
