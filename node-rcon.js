@@ -182,6 +182,11 @@ Rcon.prototype.socketOnConnect = function() {
     sendBuf.write(str, 4);
     this._sendSocket(sendBuf);
   } else {
+    var sendBuf = new Buffer(5);
+    sendBuf.writeInt32LE(-1, 0);
+    sendBuf.writeUint8(0, 4);
+    this._sendSocket(sendBuf);
+
     this.hasAuthed = true;
     this.emit('auth');
   }
