@@ -93,7 +93,7 @@ Rcon.prototype.connect = function() {
                    .on('listening', function() { self.socketOnConnect() })
                    .on('error', function(err) { self.emit('error', err) })
                    .on('close', function() { self.socketOnEnd() });
-    this._udpSocket.bind(41441);
+    this._udpSocket.bind(0);
   }
 };
 
