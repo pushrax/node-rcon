@@ -184,7 +184,7 @@ Rcon.prototype.socketOnConnect = function() {
   } else {
     var sendBuf = new Buffer(5);
     sendBuf.writeInt32LE(-1, 0);
-    sendBuf.writeUint8(0, 4);
+    sendBuf.writeUInt8(0, 4);
     this._sendSocket(sendBuf);
 
     this.hasAuthed = true;
