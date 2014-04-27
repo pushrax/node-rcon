@@ -11,7 +11,7 @@
 
 var Rcon = require('../node-rcon');
 
-var conn = new Rcon('localhost', 1234, 'password');
+var conn = new Rcon('localhost', 1234, 'dingo1816');
 conn.on('auth', function() {
   console.log("Authed!");
 
