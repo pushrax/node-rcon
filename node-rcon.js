@@ -194,6 +194,7 @@ Rcon.prototype.socketOnConnect = function() {
 
 Rcon.prototype.socketOnEnd = function() {
   this.emit('end');
+  this.hasAuthed = false;
 };
 
 module.exports = Rcon;
