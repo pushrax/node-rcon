@@ -48,12 +48,13 @@ Rcon.prototype.send = function(data, cmd, id) {
     cmd = cmd || PacketType.COMMAND;
     id = id || this.rconId;
 
-    sendBuf = new Buffer(data.length + 16);
-    sendBuf.writeInt32LE(data.length + 12, 0);
+    var length = Buffer.byteLength(data);
+    sendBuf = new Buffer(length + 16);
+    sendBuf.writeInt32LE(length + 12, 0);
     sendBuf.writeInt32LE(id, 4);
     sendBuf.writeInt32LE(cmd, 8);
     sendBuf.write(data, 12);
-    sendBuf.writeInt32LE(0, data.length + 12);
+    sendBuf.writeInt32LE(0, length + 12);
   } else {
     if (this.challenge && !this._challengeToken) {
       this.emit('error', new Error('Not authenticated'));
@@ -63,7 +64,7 @@ Rcon.prototype.send = function(data, cmd, id) {
     if (this._challengeToken) str += this._challengeToken + " ";
     if (this.password) str += this.password + " ";
     str += data + "\n";
-    sendBuf = new Buffer(4 + str.length);
+    sendBuf = new Buffer(4 + Buffer.byteLength(str));
     sendBuf.writeInt32LE(-1, 0);
     sendBuf.write(str, 4)
   }
