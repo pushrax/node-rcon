@@ -143,7 +143,7 @@ Rcon.prototype._tcpSocketOnData = function(data) {
     var id = data.readInt32LE(4);
     var type = data.readInt32LE(8);
 
-    if (len >= 10) {
+    if (len >= 10 && data.length >= len + 4) {
       if (id == this.rconId) {
         if (!this.hasAuthed && type == PacketType.RESPONSE_AUTH) {
           this.hasAuthed = true;
@@ -159,9 +159,7 @@ Rcon.prototype._tcpSocketOnData = function(data) {
       } else {
         this.emit('error', new Error("Authentication failed"));
       }
-    }
 
-    if (data.length > len + 4) {
       data = data.slice(12 + len - 8);
     } else {
       // Keep a reference to the chunk if it doesn't represent a full packet
