@@ -148,7 +148,7 @@ Rcon.prototype._tcpSocketOnData = function(data) {
         if (!this.hasAuthed && type == PacketType.RESPONSE_AUTH) {
           this.hasAuthed = true;
           this.emit('auth');
-        } else if (type == PacketType.RESPONSE_VALUE) {
+        } else if (this.hasAuthed && type == PacketType.RESPONSE_VALUE) {
           // Read just the body of the packet (truncate the last null byte)
           // See https://developer.valvesoftware.com/wiki/Source_RCON_Protocol for details
           var str = data.toString('utf8', 12, 12 + len - 10);
