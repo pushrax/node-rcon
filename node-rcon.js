@@ -153,8 +153,12 @@ Rcon.prototype._tcpSocketOnData = function(data) {
           // See https://developer.valvesoftware.com/wiki/Source_RCON_Protocol for details
           var str = data.toString('utf8', 12, 12 + len - 10);
 
-          // Emit the response without the newline.
-          this.emit('response', str.substring(0, str.length - 1));
+          if(str.charAt(str.length - 1) === '\n') {
+            // Emit the response without the newline.
+            str = str.substring(0, str.length - 1);
+          }
+
+          this.emit('response', str);
         }
       } else {
         this.emit('error', new Error("Authentication failed"));
