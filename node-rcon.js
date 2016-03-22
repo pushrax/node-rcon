@@ -25,7 +25,7 @@ var PacketType = {
  *   id - RCON id to use (optional)
  */
 function Rcon(host, port, password, options) {
-  if(!(this instanceof Rcon)) return new Rcon(host, port, password, options);
+  if (!(this instanceof Rcon)) return new Rcon(host, port, password, options);
   options = options || {};
 
   this.host = host;
@@ -153,7 +153,7 @@ Rcon.prototype._tcpSocketOnData = function(data) {
           // See https://developer.valvesoftware.com/wiki/Source_RCON_Protocol for details
           var str = data.toString('utf8', 12, 12 + len - 10);
 
-          if(str.charAt(str.length - 1) === '\n') {
+          if (str.charAt(str.length - 1) === '\n') {
             // Emit the response without the newline.
             str = str.substring(0, str.length - 1);
           }
