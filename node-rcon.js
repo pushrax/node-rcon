@@ -49,12 +49,12 @@ Rcon.prototype.send = function(data, cmd, id) {
     id = id || this.rconId;
 
     var length = Buffer.byteLength(data);
-    sendBuf = new Buffer(length + 16);
-    sendBuf.writeInt32LE(length + 12, 0);
+    sendBuf = new Buffer(length + 14);
+    sendBuf.writeInt32LE(length + 10, 0);
     sendBuf.writeInt32LE(id, 4);
     sendBuf.writeInt32LE(cmd, 8);
     sendBuf.write(data, 12);
-    sendBuf.writeInt32LE(0, length + 12);
+    sendBuf.writeInt16LE(0, length + 12);
   } else {
     if (this.challenge && !this._challengeToken) {
       this.emit('error', new Error('Not authenticated'));
