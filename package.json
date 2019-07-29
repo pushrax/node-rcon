@@ -15,11 +15,12 @@
     "prepublishOnly": "npm run compile",
     "compile": "npm run clean && tsc -p .",
     "watch": "tsc -w -p .",
-    "clean": "rm -rf dist"
+    "clean": "rimraf dist"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^12.6.8",
+    "rimraf": "^2.6.3",
     "typescript": "^3.5.3"
   }
 }
