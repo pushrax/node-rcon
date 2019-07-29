@@ -6,6 +6,17 @@
   "homepage": "https://github.com/pushrax/node-rcon",
   "repository": "git://github.com/pushrax/node-rcon",
   "main": "dist/node-rcon.js",
+  "types": "./dist/node-rcon.d.ts",
+  "files": [
+    "dist/node-rcon.js",
+    "dist/node-rcon.d.ts"
+  ],
+  "scripts": {
+    "prepublishOnly": "npm run compile",
+    "compile": "npm run clean && tsc -p .",
+    "watch": "tsc -w -p .",
+    "clean": "rm -rf dist"
+  },
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^12.6.8",
