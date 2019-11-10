@@ -160,8 +160,18 @@ Rcon.prototype._tcpSocketOnData = function(data) {
 
           this.emit('response', str);
         }
-      } else {
+      } else if (id == -1) {
         this.emit('error', new Error("Authentication failed"));
+      } else {
+        // ping/pong likely
+        var str = data.toString('utf8', 12, 12 + len - 10);
+
+        if (str.charAt(str.length - 1) === '\n') {
+          // Emit the response without the newline.
+          str = str.substring(0, str.length - 1);
+        }
+
+        this.emit('server', str);
       }
 
       data = data.slice(12 + len - 8);

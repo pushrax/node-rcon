@@ -46,3 +46,26 @@ request.
 
 Please submit a bug report for any game you try that doesn't work!
 
+## Events
+
+The connection emits the following events:
+
+- .emit('auth')
+
+This is sent in response to an authentication request that was successful.
+
+- .emit('end')
+
+The connection was closed from any reason
+
+- .emit('response', str)
+
+There was a response returned to a command/message sent to the server
+
+- .emit('server', str)
+
+There was a message from the server that was not a response to a command or an auth failiure.
+
+- .emit('error', error)
+
+There was an error, usually an authentication failure.
