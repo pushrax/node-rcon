@@ -47,6 +47,11 @@ request.
 
 Please submit a bug report for any game you try that doesn't work!
 
+Note that some servers may close the connection if it is idle for a long period of time.
+If your application may leave the connection idle for a long time, you can either create a
+new Rcon instance (and connection) each time you need it, or you can send a ping command
+periodically to keep the connection alive.
+
 ## Events
 
 The connection emits the following events:
