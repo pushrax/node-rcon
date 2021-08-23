@@ -16,7 +16,8 @@ npm:
 
 ## Usage
 
-See [`examples/stdio.js`](https://github.com/pushrax/node-rcon/blob/master/examples/stdio.js) for a simple example.
+See [`examples/basic.js`](https://github.com/pushrax/node-rcon/blob/master/examples/basic.js) for a simple example, or
+[`examples/stdio.js`](https://github.com/pushrax/node-rcon/blob/master/examples/stdio.js) for a complete command line client.
 
 Some games use TCP and some use UDP for their RCON implementation. To tell
 node-rcon which protocol to use, pass it an options object like so:
