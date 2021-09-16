@@ -49,7 +49,7 @@ Rcon.prototype.send = function(data, cmd, id) {
     id = id || this.rconId;
 
     var length = Buffer.byteLength(data);
-    sendBuf = new Buffer(length + 14);
+    sendBuf = Buffer.alloc(length + 14);
     sendBuf.writeInt32LE(length + 10, 0);
     sendBuf.writeInt32LE(id, 4);
     sendBuf.writeInt32LE(cmd, 8);
@@ -64,7 +64,7 @@ Rcon.prototype.send = function(data, cmd, id) {
     if (this._challengeToken) str += this._challengeToken + " ";
     if (this.password) str += this.password + " ";
     str += data + "\n";
-    sendBuf = new Buffer(4 + Buffer.byteLength(str));
+    sendBuf = Buffer.alloc(4 + Buffer.byteLength(str));
     sendBuf.writeInt32LE(-1, 0);
     sendBuf.write(str, 4)
   }
@@ -196,12 +196,12 @@ Rcon.prototype.socketOnConnect = function() {
     this.send(this.password, PacketType.AUTH);
   } else if (this.challenge) {
     var str = "challenge rcon\n";
-    var sendBuf = new Buffer(str.length + 4);
+    var sendBuf = Buffer.alloc(str.length + 4);
     sendBuf.writeInt32LE(-1, 0);
     sendBuf.write(str, 4);
     this._sendSocket(sendBuf);
   } else {
-    var sendBuf = new Buffer(5);
+    var sendBuf = Buffer.alloc(5);
     sendBuf.writeInt32LE(-1, 0);
     sendBuf.writeUInt8(0, 4);
     this._sendSocket(sendBuf);
