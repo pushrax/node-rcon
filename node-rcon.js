@@ -45,16 +45,16 @@ function Rcon(host, port, password, options) {
   events.EventEmitter.call(this);
 };
 
-util.extends(Rcon, events.EventEmitter);
+util.inherits(Rcon, events.EventEmitter);
 
 /**
  * Sends a data packet to the server with the RCON connection
- * @param {any} data - The data packet sent to the server (optional)
  * @param {string} cmd - The command to execute on the server. Note: for Minecraft, commands don't need to be prefixed by a slash (/)
+ * @param {any} data - The data packet sent to the server (optional)
  * @param {any} id - RCON id to use (optional)
  * @returns 
  */
-Rcon.prototype.send = function(data, cmd, id) {
+Rcon.prototype.send = function(cmd, data, id) {
   var sendBuf;
   if (this.tcp) {
     cmd = cmd || PacketType.COMMAND;
