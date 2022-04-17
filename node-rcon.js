@@ -54,7 +54,7 @@ util.inherits(Rcon, events.EventEmitter);
  * @param {any} id - RCON id to use (optional)
  * @returns 
  */
-Rcon.prototype.send = function(cmd, data, id) {
+Rcon.prototype.send = function(data, cmd, id) {
   var sendBuf;
   if (this.tcp) {
     cmd = cmd || PacketType.COMMAND;
