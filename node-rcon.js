@@ -19,10 +19,15 @@ var PacketType = {
 };
 
 /**
- * options:
- *   tcp - true for TCP, false for UDP (optional, default true)
- *   challenge - if using UDP, whether to use the challenge protocol (optional, default true)
- *   id - RCON id to use (optional)
+ * Rcon, opens a RCON connection used by Valve products and GoldSrc, also implemented into the Minecraft Protocol
+ * @param {string} host - A String representing the IP address of the server you are trying to connect to
+ * @param {number} port - The RCON port of the server. Note: For Minecraft, this is specified in the server.properties file under the "rcon.port=..." entry
+ * @param {string} password - The RCON password to authenticate into the server. Please avoid leaving this empty
+ * @param {{tcp: boolean, challenge: boolean, id: any}} options - Connection options;
+ *   `tcp` - true for TCP, false for UDP (optional, default true)
+ *   `challenge` - if using UDP, whether to use the challenge protocol (optional, default true)
+ *   `id` - RCON id to use (optional)
+ * @returns a connection buffer 
  */
 function Rcon(host, port, password, options) {
   if (!(this instanceof Rcon)) return new Rcon(host, port, password, options);
@@ -42,6 +47,13 @@ function Rcon(host, port, password, options) {
 
 util.inherits(Rcon, events.EventEmitter);
 
+/**
+ * Sends a data packet to the server with the RCON connection
+ * @param {string} cmd - The command to execute on the server. Note: for Minecraft, commands don't need to be prefixed by a slash (/)
+ * @param {any} data - The data packet sent to the server (optional)
+ * @param {any} id - RCON id to use (optional)
+ * @returns 
+ */
 Rcon.prototype.send = function(data, cmd, id) {
   var sendBuf;
   if (this.tcp) {
@@ -72,13 +84,20 @@ Rcon.prototype.send = function(data, cmd, id) {
 };
 
 Rcon.prototype._sendSocket = function(buf) {
-  if (this._tcpSocket) {
-    this._tcpSocket.write(buf.toString('binary'), 'binary');
-  } else if (this._udpSocket) {
-    this._udpSocket.send(buf, 0, buf.length, this.port, this.host);
-  }
+  if (this._udpSocket)
+    return this._udpSocket.send(buf, 0, buf.length, this.port, this.host);
+  this._tcpSocket.write(buf.toString('binary'), 'binary');
 };
 
+/**
+ * Connects to the server. It will return immediately, and if you try to send a command here, it will fail since the connection isn't authenticated yet. Wait for the 'auth' event.
+ * @example 
+ * var conn = new Rcon('localhost', 1234, 'password');
+ * conn.on("auth", function() {
+ *  ...
+ * })
+ * rcon.connect()
+ */
 Rcon.prototype.connect = function() {
   var self = this;
 
@@ -98,11 +117,20 @@ Rcon.prototype.connect = function() {
   }
 };
 
+/**
+ * Disconnects from the server.
+ */
 Rcon.prototype.disconnect = function() {
   if (this._tcpSocket) this._tcpSocket.end();
   if (this._udpSocket) this._udpSocket.close();
 };
 
+/**
+ * Sets a timeout for the connection if it fails to reach the server
+ * @param {number} timeout - The time frame that if it is exceeded, the connection will drop
+ * @param {() => {}} callback - A function to execute as a callback
+ * @returns a function callback
+ */
 Rcon.prototype.setTimeout = function(timeout, callback) {
   if (!this._tcpSocket) return;
 
