@@ -21,7 +21,7 @@ var PacketType = {
 /**
  * Rcon, opens a RCON connection used by Valve products and GoldSrc, also implemented into the Minecraft Protocol
  * @param {string} host - A String representing the IP address of the server you are trying to connect to
- * @param {number} port - The RCON port of the server, configurable in the server.properties on the server
+ * @param {number} port - The RCON port of the server. Note: For Minecraft, this is specified in the server.properties file under the "rcon.port=..." entry
  * @param {string} password - The RCON password to authenticate into the server. Please avoid leaving this empty
  * @param {{tcp: boolean, challenge: boolean, id: any}} options - Connection options;
  *   `tcp` - true for TCP, false for UDP (optional, default true)
@@ -83,10 +83,6 @@ Rcon.prototype.send = function(data, cmd, id) {
   this._sendSocket(sendBuf);
 };
 
-/**
- * Sends and establishes a socket connection with the server, either on TCP or UDP connections
- * @param {*} buf - The buffer inherited from the connection
- */
 Rcon.prototype._sendSocket = function(buf) {
   if (this._udpSocket)
     return this._udpSocket.send(buf, 0, buf.length, this.port, this.host);
